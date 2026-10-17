@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trang Crawler Tin Tức</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <h1 class="logo">WEB TIN TỨC 24H</h1>
+      <p class="tagline">Công cụ trích xuất dữ liệu tin tức tự động</p>
+    </div>
+    <nav class="navbar">
+      <ul class="nav-list">
+        <li><a href="index.html">Trang chủ</a></li>
+        <li><a href="crawler.html" class="active">Crawler Tin Tức</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container" style="background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+    <h2 style="color: #0056b3; margin-bottom: 15px;">Thu Thập Dữ Liệu Bài Viết (Crawler)</h2>
+    <p style="margin-bottom: 20px; color: #555;">Nhập URL bài viết từ trang web (ví dụ: Dân trí) để thực hiện trích xuất dữ liệu và lưu vào LocalStorage:</p>
+    
+    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+      <input type="text" id="article-url" value="https://dantri.com.vn/bat-dong-san/ha-noi-tinh-co-che-boi-thuong-dat-dac-biet-cho-7-du-an-duong-sat-20260928122246655.htm" style="flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;">
+      <button onclick="crawlArticle()" style="background: #0056b3; color: white; border: none; padding: 12px 25px; border-radius: 4px; font-weight: bold; cursor: pointer;">Bắt đầu Crawl</button>
+    </div>
+
+    <div id="result-status" style="font-weight: bold; margin-bottom: 15px;"></div>
+
+    <h3 style="margin-bottom: 10px; font-size: 16px;">Dữ liệu JSON sau khi crawl:</h3>
+    <pre id="json-output" style="background: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 6px; overflow-x: auto; font-family: Consolas, monospace; font-size: 13px; max-height: 350px;">Chưa có dữ liệu. Nhấn "Bắt đầu Crawl" để trích xuất.</pre>
+    
+    <div style="margin-top: 25px;">
+      <a href="index.html" style="text-decoration: none; background: #6c757d; color: white; padding: 10px 20px; border-radius: 4px; display: inline-block;">&larr; Quay lại Trang chủ xem kết quả</a>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="copyright"><p>&copy; 2026 Web Tin Tức 24H. Tất cả quyền được bảo lưu.</p></div>
+  </footer>
+
+  <script src="crawler.js"></script>
+</body>
+</html>

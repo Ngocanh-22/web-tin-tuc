@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chi Tiết Bài Viết - Web Tin Tức 24H</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <h1 class="logo">WEB TIN TỨC 24H</h1>
+    </div>
+    <nav class="navbar">
+      <ul class="nav-list">
+        <li><a href="index.html">Trang chủ</a></li>
+        <li><a href="crawler.html">Crawler Tin Tức</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container detail-container" id="post-detail"></main>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <h3>WEB TIN TỨC 24H</h3>
+        <p>Trang tin tức tổng hợp cập nhật liên tục các sự kiện nóng hổi.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Liên Kết Nhanh</h4>
+        <ul>
+          <li><a href="index.html">Trang chủ</a></li>
+          <li><a href="crawler.html">Công cụ Crawler</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Liên Hệ</h4>
+        <p>Email: hotro@webtintuc24h.vn</p>
+        <p>Địa chỉ: Hà Nội, Việt Nam</p>
+      </div>
+      <div class="footer-col">
+        <h4>Mạng Xã Hội</h4>
+        <p>Facebook | YouTube | TikTok</p>
+      </div>
+    </div>
+    <div class="copyright">
+      <p>&copy; 2026 Web Tin Tức 24H. Tất cả quyền được bảo lưu.</p>
+    </div>
+  </footer>
+
+  <script src="crawler.js"></script>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('id');
+
+    const posts = JSON.parse(localStorage.getItem('posts')) || defaultPosts;
+    const post = posts.find(p => p.id === postId) || posts[0];
+
+    const detailDiv = document.getElementById('post-detail');
+    if (post) {
+      detailDiv.innerHTML = `
+        <span class="category-tag">${post.category}</span>
+        <h2 class="detail-title">${post.title}</h2>
+        <p class="detail-meta">📅 Ngày đăng: ${post.publishedAt} | ✍️ Tác giả: <strong>${post.author}</strong> | 🌐 Nguồn: ${post.source}</p>
+        <img class="detail-img" src="${post.image}" alt="${post.title}">
+        <p class="detail-excerpt"><strong>${post.excerpt}</strong></p>
+        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ddd;">
+        <div class="detail-content">
+          <p>${post.content}</p>
+        </div>
+        <div style="margin-top: 30px;">
+          <a href="index.html" style="text-decoration: none; background: #0056b3; color: white; padding: 10px 20px; border-radius: 4px; display: inline-block;">&larr; Quay lại trang chủ</a>
+        </div>
+      `;
+    } else {
+      detailDiv.innerHTML = `<h2>Không tìm thấy bài viết!</h2><p><a href="index.html">Quay lại trang chủ</a></p>`;
+    }
+  </script>
+</body>
+</html>

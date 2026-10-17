@@ -1,0 +1,16 @@
+{
+  "menu": [
+    { "id": "home", "title": "Trang chủ", "url": "index.html", "type": "home" },
+    { "id": "thoi-su", "title": "Thời sự", "type": "category", "children": [
+      { "id": "chinh-tri", "title": "Chính trị" },
+      { "id": "giao-thong", "title": "Giao thông" },
+      { "id": "moi-truong", "title": "Môi trường" }
+    ]},
+    { "id": "the-gioi", "title": "Thế giới", "type": "category", "children": [
+      { "id": "quan-su", "title": "Quân sự" },
+      { "id": "phan-tich", "title": "Phân tích - Bình luận" }
+    ]},
+    { "id": "bat-dong-san", "title": "Bất động sản", "type": "category" },
+    { "id": "cong-nghe", "title": "Công nghệ", "type": "category" }
+  ]
+}

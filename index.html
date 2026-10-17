@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trang Chủ - Website Tin Tức 24H</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- HEADER & NAVIGATION BAR -->
+  <header>
+    <div class="header-container">
+      <h1 class="logo">WEB TIN TỨC 24H</h1>
+      <p class="tagline">Cập nhật tin tức nhanh chóng, chính xác mỗi ngày</p>
+    </div>
+    <nav class="navbar">
+      <ul id="main-menu" class="nav-list">
+        <li><a href="index.html" class="active">Trang chủ</a></li>
+        <li><a href="crawler.html">Crawler Tin Tức</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="container">
+    <h2 class="section-title" id="category-heading">Tin Mới Nhất</h2>
+
+    <!-- TOP SECTION: LAYOUT 1-2 (1 BÀI LỚN BÊN TRÁI, 2 BÀI NHỎ BÊN PHẢI) -->
+    <section class="top-section" id="top-featured"></section>
+
+    <!-- REMAINING POSTS LIST (DANH SÁCH BÀI VIẾT DỌC CÒN LẠI) -->
+    <h3 class="sub-title">Các tin tức khác</h3>
+    <section class="posts-list" id="remaining-posts"></section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <h3>WEB TIN TỨC 24H</h3>
+        <p>Trang tin tức tổng hợp cập nhật liên tục các sự kiện nóng hổi trong nước và quốc tế.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Liên Kết Nhanh</h4>
+        <ul>
+          <li><a href="index.html">Trang chủ</a></li>
+          <li><a href="crawler.html">Công cụ Crawler</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Liên Hệ</h4>
+        <p>Email: hotro@webtintuc24h.vn</p>
+        <p>Địa chỉ: Hà Nội, Việt Nam</p>
+      </div>
+      <div class="footer-col">
+        <h4>Mạng Xã Hội</h4>
+        <p>Facebook | YouTube | TikTok</p>
+      </div>
+    </div>
+    <div class="copyright">
+      <p>&copy; 2026 Web Tin Tức 24H. Tất cả quyền được bảo lưu.</p>
+    </div>
+  </footer>
+
+  <script src="crawler.js"></script>
+  <script>
+    // Link ảnh dự phòng cực kỳ an toàn
+    const fallbackImage = "https://picsum.photos/600/400";
+
+    function renderNews(filterCategory = null) {
+      const posts = JSON.parse(localStorage.getItem('posts')) || defaultPosts;
+      const topSection = document.getElementById('top-featured');
+      const remainingSection = document.getElementById('remaining-posts');
+      const heading = document.getElementById('category-heading');
+
+      if (filterCategory) {
+        heading.innerText = "Chuyên mục: " + filterCategory;
+      } else {
+        heading.innerText = "Tin Mới Nhất";
+      }
+
+      let displayPosts = filterCategory 
+        ? posts.filter(p => p.category.toLowerCase() === filterCategory.toLowerCase())
+        : posts;
+
+      if (displayPosts.length === 0) {
+        topSection.innerHTML = '<p>Không có bài viết nào thuộc chuyên mục này.</p>';
+        remainingSection.innerHTML = '';
+        return;
+      }
+
+      displayPosts.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+
+      const top3 = displayPosts.slice(0, 3);
+      const remaining = displayPosts.slice(3);
+
+      let topHTML = '';
+      if (top3.length > 0) {
+        const p1 = top3[0];
+        topHTML += `
+          <div class="featured-main">
+            <a href="detail.html?id=${p1.id}">
+              <img src="${p1.image}" alt="${p1.title}" onerror="this.onerror=null; this.src='${fallbackImage}';">
+              <h3>${p1.title}</h3>
+            </a>
+            <p class="excerpt">${p1.excerpt}</p>
+            <span class="meta">${p1.publishedAt} | ${p1.category}</span>
+          </div>
+        `;
+      }
+
+      if (top3.length > 1) {
+        topHTML += `<div class="featured-sub">`;
+        for (let i = 1; i < top3.length; i++) {
+          const p = top3[i];
+          topHTML += `
+            <div class="sub-post-card">
+              <a href="detail.html?id=${p.id}" class="sub-post-link">
+                <img src="${p.image}" alt="${p.title}" onerror="this.onerror=null; this.src='${fallbackImage}';">
+                <h4>${p.title}</h4>
+              </a>
+            </div>
+          `;
+        }
+        topHTML += `</div>`;
+      }
+      topSection.innerHTML = topHTML;
+
+      let listHTML = '';
+      remaining.forEach(p => {
+        listHTML += `
+          <div class="post-item">
+            <img src="${p.image}" alt="${p.title}" onerror="this.onerror=null; this.src='${fallbackImage}';">
+            <div class="post-info">
+              <h4><a href="detail.html?id=${p.id}">${p.title}</a></h4>
+              <p>${p.excerpt}</p>
+              <span class="meta">${p.publishedAt} - Tác giả: ${p.author}</span>
+            </div>
+          </div>
+        `;
+      });
+      remainingSection.innerHTML = listHTML;
+    }
+
+    fetch('categories.json')
+      .then(res => res.json())
+      .then(data => {
+        const mainMenu = document.getElementById('main-menu');
+        data.menu.forEach(item => {
+          if (item.id !== 'home') {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="#" onclick="renderNews('${item.title}')">${item.title}</a>`;
+            mainMenu.appendChild(li);
+          }
+        });
+      }).catch(err => console.log('Dùng menu mặc định'));
+
+    window.onload = () => renderNews();
+  </script>
+</body>
+</html>
