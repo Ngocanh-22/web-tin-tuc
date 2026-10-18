@@ -1,69 +1,368 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Chi Tiết Bài Viết - WEB TIN TỨC 24H</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+
+    <!-- HEADER -->
     <header>
         <div class="header-container">
             <h1 class="logo">WEB TIN TỨC 24H</h1>
+            <p class="tagline">
+                Cập nhật tin tức nhanh chóng, chính xác mỗi ngày
+            </p>
         </div>
+
         <nav class="navbar">
             <ul class="nav-list">
-                <li><a href="index.html">Trang chủ</a></li>
-                <li><a href="crawler.html">Crawler Tin Tức</a></li>
+                <li>
+                    <a href="index.html">Trang chủ</a>
+                </li>
+
+                <li>
+                    <a href="crawler.html">Crawler Tin Tức</a>
+                </li>
             </ul>
         </nav>
     </header>
 
+
+    <!-- NỘI DUNG CHI TIẾT -->
     <main class="container detail-container">
-        <!-- Nội dung chi tiết bài viết sẽ được JavaScript load vào đây -->
-        <div id="detail-content"></div>
+
+        <div id="detail-content">
+
+            <p>Đang tải bài viết...</p>
+
+        </div>
+
     </main>
 
+
+    <!-- FOOTER -->
     <footer class="site-footer">
+
         <div class="footer-container">
+
             <div class="footer-col">
+
                 <h3>WEB TIN TỨC 24H</h3>
-                <p>Trang tin tức tổng hợp nhanh chóng, chính xác mỗi ngày.</p>
+
+                <p>
+                    Trang tin tức tổng hợp nhanh chóng,
+                    chính xác mỗi ngày.
+                </p>
+
             </div>
+
+
             <div class="footer-col">
+
                 <h4>Liên Kết Nhanh</h4>
+
                 <ul>
-                    <li><a href="index.html">Trang chủ</a></li>
-                    <li><a href="crawler.html">Crawler Tin Tức</a></li>
+                    <li>
+                        <a href="index.html">
+                            Trang chủ
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="crawler.html">
+                            Crawler Tin Tức
+                        </a>
+                    </li>
                 </ul>
+
             </div>
+
+
             <div class="footer-col">
+
                 <h4>Liên Hệ</h4>
-                <p>Email: hotro@webtintuc.vn</p>
-                <p>Địa chỉ: Hà Nội, Việt Nam</p>
+
+                <p>
+                    Email: hotro@webtintuc.vn
+                </p>
+
+                <p>
+                    Địa chỉ: Hà Nội, Việt Nam
+                </p>
+
             </div>
+
         </div>
+
+        <div class="copyright">
+
+            <p>
+                &copy; 2026 WEB TIN TỨC 24H.
+                Tất cả quyền được bảo lưu.
+            </p>
+
+        </div>
+
     </footer>
 
-    <!-- File JavaScript chính điều khiển trang chi tiết -->
+
+    <!-- LOAD DỮ LIỆU -->
     <script src="crawler.js"></script>
 
-    <!-- Đoạn mã tự động xử lý và ẩn các hình ảnh bị lỗi do nguồn báo chặn -->
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const observer = new MutationObserver(function() {
-            const images = document.querySelectorAll("img");
-            images.forEach(img => {
-                img.onerror = function() {
-                    this.style.display = 'none'; // Tự động ẩn ảnh vỡ hình
-                };
-            });
-        });
 
-        // Tự động lắng nghe khi nội dung bài viết được load ra màn hình
-        const target = document.body;
-        observer.observe(target, { childList: true, subtree: true });
-    });
+    <!-- XỬ LÝ TRANG CHI TIẾT -->
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                /* ==============================
+                   1. LẤY ID TỪ URL
+                ============================== */
+
+                const params =
+                    new URLSearchParams(
+                        window.location.search
+                    );
+
+                const postId =
+                    params.get("id");
+
+
+                const detailContent =
+                    document.getElementById(
+                        "detail-content"
+                    );
+
+
+                /* ==============================
+                   2. KIỂM TRA ID
+                ============================== */
+
+                if (!postId) {
+
+                    detailContent.innerHTML = `
+                        <div class="error-message">
+
+                            <h2>Không tìm thấy bài viết</h2>
+
+                            <p>
+                                Đường dẫn bài viết không hợp lệ.
+                            </p>
+
+                            <a href="index.html">
+                                ← Quay lại trang chủ
+                            </a>
+
+                        </div>
+                    `;
+
+                    return;
+                }
+
+
+                /* ==============================
+                   3. LẤY BÀI TỪ LOCALSTORAGE
+                ============================== */
+
+                let posts = [];
+
+                const savedPosts =
+                    localStorage.getItem("posts");
+
+
+                if (savedPosts) {
+
+                    try {
+
+                        posts =
+                            JSON.parse(savedPosts);
+
+                    } catch (error) {
+
+                        console.log(
+                            "Lỗi đọc LocalStorage:",
+                            error
+                        );
+
+                    }
+
+                }
+
+
+                /* ==============================
+                   4. NẾU LOCALSTORAGE TRỐNG
+                      DÙNG defaultPosts
+                ============================== */
+
+                if (
+                    posts.length === 0 &&
+                    typeof defaultPosts !== "undefined"
+                ) {
+
+                    posts = defaultPosts;
+
+                }
+
+
+                /* ==============================
+                   5. TÌM BÀI ĐÚNG ID
+                ============================== */
+
+                const post =
+                    posts.find(function (item) {
+
+                        return (
+                            String(item.id) ===
+                            String(postId)
+                        );
+
+                    });
+
+
+                /* ==============================
+                   6. KHÔNG TÌM THẤY BÀI
+                ============================== */
+
+                if (!post) {
+
+                    detailContent.innerHTML = `
+                        <div class="error-message">
+
+                            <h2>
+                                Không tìm thấy bài viết
+                            </h2>
+
+                            <p>
+                                Bài viết này không tồn tại
+                                hoặc dữ liệu chưa được lưu.
+                            </p>
+
+                            <a href="index.html">
+                                ← Quay lại trang chủ
+                            </a>
+
+                        </div>
+                    `;
+
+                    return;
+                }
+
+
+                /* ==============================
+                   7. CHUẨN BỊ DỮ LIỆU
+                ============================== */
+
+                const title =
+                    post.title ||
+                    "Không có tiêu đề";
+
+
+                const image =
+                    post.image || "";
+
+
+                const author =
+                    post.author ||
+                    "Không rõ";
+
+
+                const category =
+                    post.category ||
+                    "Chưa phân loại";
+
+
+                const publishedAt =
+                    post.publishedAt ||
+                    "Không rõ";
+
+
+                const content =
+                    post.content ||
+                    post.excerpt ||
+                    "Chưa có nội dung bài viết.";
+
+
+                /* ==============================
+                   8. HIỂN THỊ BÀI VIẾT
+                ============================== */
+
+                detailContent.innerHTML = `
+
+                    <article class="article-detail">
+
+                        <h1 class="detail-title">
+                            ${title}
+                        </h1>
+
+
+                        <div class="detail-meta">
+
+                            <span>
+                                <strong>Tác giả:</strong>
+                                ${author}
+                            </span>
+
+                            <span>
+                                <strong>Thời gian:</strong>
+                                ${publishedAt}
+                            </span>
+
+                            <span>
+                                <strong>Chuyên mục:</strong>
+                                ${category}
+                            </span>
+
+                        </div>
+
+
+                        ${
+                            image
+                            ? `
+                                <img
+                                    class="detail-image"
+                                    src="${image}"
+                                    alt="${title}"
+                                    onerror="
+                                        this.style.display='none'
+                                    "
+                                >
+                              `
+                            : ""
+                        }
+
+
+                        <div class="detail-body">
+
+                            ${content}
+
+                        </div>
+
+
+                        <div class="back-home">
+
+                            <a href="index.html">
+                                ← Quay lại trang chủ
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                `;
+
+            }
+        );
+
     </script>
+
 </body>
 </html>
