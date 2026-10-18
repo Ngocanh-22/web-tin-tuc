@@ -1,17 +1,34 @@
 // ==========================================
-// 1. Cấu hình & Hàm nạp dữ liệu chung
+// 1. Cấu hình & Hàm nạp dữ liệu chuẩn GitHub Pages
 // ==========================================
 
-// Hàm lấy dữ liệu bài viết (Ưu tiên localStorage, nếu trống sẽ tự động đọc file categories.json)
 async function getNewsData() {
-    let newsData = JSON.parse(localStorage.getItem("newsData"));
+    let newsData = null;
+    try {
+        newsData = JSON.parse(localStorage.getItem("newsData"));
+    } catch (e) {
+        console.error("Lỗi đọc localStorage:", e);
+    }
     
+    // Nếu localStorage trống, tự động nạp từ file categories.json
     if (!newsData) {
         try {
-            const response = await fetch("categories.json");
-            newsData = await response.json();
-            // Lưu lại vào localStorage để tái sử dụng mượt mà
-            localStorage.setItem("newsData", JSON.stringify(newsData));
+            // Xác định đường dẫn tương đối lẫn tuyệt đối trên GitHub Pages
+            let jsonPath = "categories.json";
+            if (window.location.hostname.includes("github.io")) {
+                jsonPath = "./categories.json";
+            }
+
+            let response = await fetch(jsonPath);
+            if (!response.ok) {
+                // Thử đường dẫn fallback nếu bị lệch subpath /web-tin-tuc/
+                response = await fetch("/web-tin-tuc/categories.json");
+            }
+
+            if (response.ok) {
+                newsData = await response.json();
+                localStorage.setItem("newsData", JSON.stringify(newsData));
+            }
         } catch (error) {
             console.error("Lỗi khi tải file categories.json:", error);
         }
@@ -24,8 +41,10 @@ async function getNewsData() {
 // ==========================================
 
 async function renderHomePage() {
-    const homeContainer = document.getElementById("news-container") || document.getElementById("content") || document.querySelector(".main-content");
-    if (!homeContainer) return; // Không phải trang chủ thì bỏ qua
+    const homeContainer = document.getElementById("news-container") || 
+                          document.getElementById("content") || 
+                          document.querySelector(".main-content");
+    if (!homeContainer) return;
 
     const newsData = await getNewsData();
     if (!newsData) {
@@ -34,8 +53,6 @@ async function renderHomePage() {
     }
 
     let htmlContent = "";
-    
-    // Kiểm tra cấu trúc dữ liệu mảng danh mục
     const categories = Array.isArray(newsData) ? newsData : (newsData.categories || [newsData]);
 
     categories.forEach(cat => {
@@ -77,14 +94,14 @@ async function renderHomePage() {
 
 async function renderDetailPage() {
     const detailContainer = document.getElementById("detail-content");
-    if (!detailContainer) return; // Không phải trang chi tiết thì bỏ qua
+    if (!detailContainer) return;
 
-    // Lấy ID bài viết từ tham số URL (?id=...)
+    // Lấy ID bài viết từ URL (?id=...)
     const urlParams = new URLSearchParams(window.location.search);
     const articleId = urlParams.get("id");
 
     if (!articleId) {
-        detailContainer.innerHTML = "<p style='padding:20px; text-align:center;'>Không tìm thấy tham số bài viết!</p>";
+        detailContainer.innerHTML = "<p style='padding:20px; text-align:center;'>Không tìm thấy bài viết!</p>";
         return;
     }
 
@@ -95,7 +112,12 @@ async function renderDetailPage() {
         const categories = Array.isArray(newsData) ? newsData : (newsData.categories || [newsData]);
         for (const cat of categories) {
             const articles = cat.articles || cat.items || [];
-            const article = articles.find(a => (a.id && a.id === articleId) || (a.link && a.link === articleId));
+            // Tìm bài khớp ID hoặc Link
+            const article = articles.find(a => 
+                (a.id && a.id === articleId) || 
+                (a.link && a.link === articleId) ||
+                (a.id && encodeURIComponent(a.id) === encodeURIComponent(articleId))
+            );
             if (article) {
                 foundArticle = article;
                 break;
@@ -105,55 +127,11 @@ async function renderDetailPage() {
 
     if (foundArticle) {
         detailContainer.innerHTML = `
-            <article class="article-detail" style="background:#fff; padding:20px; border-radius:8px; margin-top:20px;">
+            <article class="article-detail" style="background:#fff; padding:20px; border-radius:8px; margin-top:20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
                 <h1 style="font-size: 24px; color: #222; margin-bottom: 15px;">${foundArticle.title || ''}</h1>
                 <div class="article-meta" style="margin-bottom: 20px; color: #777; font-size: 13px;">
                     <span>📅 Ngày đăng: ${foundArticle.pubDate || foundArticle.date || 'Mới cập nhật'}</span>
                     ${foundArticle.author ? `<span style="margin-left:15px;">✍️ Tác giả: ${foundArticle.author}</span>` : ''}
                 </div>
                 ${foundArticle.description ? `<p style="font-weight:bold; font-size:16px; line-height:1.5; color:#444; margin-bottom:20px; background:#f9f9f9; padding:12px; border-left:4px solid #0056b3;">${foundArticle.description}</p>` : ''}
-                <div class="article-body" style="line-height: 1.8; font-size: 15px; color: #333;">
-                    ${foundArticle.content || foundArticle.summary || '<p>Nội dung bài viết đang được cập nhật...</p>'}
-                </div>
-                <div style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px;">
-                    <a href="index.html" style="display:inline-block; padding:10px 20px; background:#0056b3; color:#fff; text-decoration:none; border-radius:5px; font-weight:bold;">← Quay lại trang chủ</a>
-                </div>
-            </article>
-        `;
-    } else {
-        detailContainer.innerHTML = `
-            <div style="padding: 40px; text-align: center; background: #fff; border-radius: 8px; margin-top: 20px;">
-                <h3>Nội dung bài viết không tồn tại hoặc chưa được cập nhật dữ liệu.</h3>
-                <p style="margin: 15px 0; color: #666;">Vui lòng thử bấm cào tin để cập nhật dữ liệu mới nhất.</p>
-                <a href="crawler.html" style="display:inline-block; padding:8px 16px; background:#28a745; color:#fff; text-decoration:none; border-radius:4px; margin-right:10px;">Đến trang Cào Tin</a>
-                <a href="index.html" style="display:inline-block; padding:8px 16px; background:#0056b3; color:#fff; text-decoration:none; border-radius:4px;">Về Trang Chủ</a>
-            </div>
-        `;
-    }
-}
-
-// ==========================================
-// 4. Xử lý Tự động ẩn ảnh bị lỗi (onError)
-// ==========================================
-
-function handleImageErrors() {
-    const observer = new MutationObserver(() => {
-        document.querySelectorAll("img").forEach(img => {
-            img.onerror = function() {
-                this.style.display = 'none'; // Tự động ẩn ảnh khi link bị lỗi/chặn
-            };
-        });
-    });
-
-    observer.observe(document.body, { childList: true, subtree: true });
-}
-
-// ==========================================
-// 5. Khởi chạy khi trang tải xong
-// ==========================================
-
-document.addEventListener("DOMContentLoaded", () => {
-    renderHomePage();
-    renderDetailPage();
-    handleImageErrors();
-});
+                <div class="article-body" style="line-height: 1.8; font-size: 15px; color:
