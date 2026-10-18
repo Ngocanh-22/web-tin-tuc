@@ -1,128 +1,408 @@
 // ==========================================
-// 1. Xử lý Trang Chủ (index.html)
+// 1. DỮ LIỆU BÀI VIẾT MẪU
 // ==========================================
-async function renderHomePage() {
-    const homeContainer = document.getElementById("news-container") || 
-                          document.getElementById("content") || 
-                          document.querySelector(".main-content");
-    if (!homeContainer) return;
 
-    let newsData = null;
-    try {
-        newsData = JSON.parse(localStorage.getItem("newsData"));
-    } catch (e) {}
+const defaultPosts = [
+    {
+        id: "dtri-20260928122246655",
+        title: "Hà Nội tính cơ chế bồi thường đất đặc biệt cho 7 dự án đường sắt",
+        slug: "ha-noi-tinh-co-che-boi-thuong-dat-dac-biet-cho-7-du-an-duong-sat",
 
-    // Nếu localStorage trống, tự động nạp từ categories.json
-    if (!newsData) {
-        try {
-            let res = await fetch("categories.json");
-            if (!res.ok) res = await fetch("./categories.json");
-            newsData = await res.json();
-            localStorage.setItem("newsData", JSON.stringify(newsData));
-        } catch (err) {
-            homeContainer.innerHTML = "<p style='padding:20px; text-align:center;'>Chưa có dữ liệu tin tức. Vui lòng kiểm tra lại file categories.json!</p>";
-            return;
-        }
+        excerpt:
+            "Hà Nội đang xem xét cơ chế bồi thường, hỗ trợ và tái định cư đặc biệt để triển khai 7 dự án đường sắt quan trọng trên địa bàn thành phố.",
+
+        content:
+            `<p>Hà Nội đang nghiên cứu và đề xuất cơ chế bồi thường, hỗ trợ và tái định cư đặc biệt nhằm tháo gỡ khó khăn trong công tác giải phóng mặt bằng cho 7 dự án đường sắt trọng điểm.</p>
+
+            <p>Đây là nhóm dự án hạ tầng giao thông có vai trò quan trọng trong việc phát triển mạng lưới vận tải công cộng và giảm ùn tắc đô thị.</p>
+
+            <p>Thành phố nhấn mạnh việc cần cơ chế linh hoạt để đẩy nhanh tiến độ triển khai, đảm bảo quyền lợi cho người dân bị ảnh hưởng và đồng thời đáp ứng yêu cầu phát triển hạ tầng chiến lược.</p>`,
+
+        author: "Văn Hưng",
+        category: "Bất động sản",
+        publishedAt: "2026-09-28 12:22",
+        source: "dantri.com.vn",
+
+        image:
+            "https://picsum.photos/seed/hanoi-railway/900/500",
+
+        url:
+            "https://dantri.com.vn/bat-dong-san/ha-noi-tinh-co-che-boi-thuong-dat-dac-biet-cho-7-du-an-duong-sat-20260928122246655.htm"
+    },
+
+    {
+        id: "post-2",
+
+        title:
+            "Cô gái Việt tiết lộ cảnh chưa từng thấy giữa Bangkok ngập lụt diện rộng",
+
+        slug:
+            "co-gai-viet-tiet-lo-canh-bangkok-ngap-lut",
+
+        excerpt:
+            "Những hình ảnh đáng chú ý trong đợt ngập lụt tại Bangkok.",
+
+        content:
+            "<p>Nội dung bài viết đang được cập nhật.</p>",
+
+        author: "Ban biên tập",
+        category: "Thế giới",
+        publishedAt: "2026-09-28 10:30",
+        source: "dantri.com.vn",
+
+        image:
+            "https://picsum.photos/seed/bangkok/900/500",
+
+        url: "#"
+    },
+
+    {
+        id: "post-3",
+
+        title:
+            "Ông bố ở Bắc Ninh khóc như mưa tiễn con gái về nhà chồng",
+
+        slug:
+            "ong-bo-bac-ninh-tien-con-gai-ve-nha-chong",
+
+        excerpt:
+            "Khoảnh khắc xúc động trong ngày cưới của con gái.",
+
+        content:
+            "<p>Nội dung bài viết đang được cập nhật.</p>",
+
+        author: "Ban biên tập",
+        category: "Thời sự",
+        publishedAt: "2026-09-27 18:00",
+        source: "dantri.com.vn",
+
+        image:
+            "https://picsum.photos/seed/wedding/900/500",
+
+        url: "#"
+    },
+
+    {
+        id: "post-4",
+
+        title:
+            "Cô gái Việt trồng rau, làm vườn 100m2 trên đất Mỹ để đỡ nhớ nhà",
+
+        slug:
+            "co-gai-viet-trong-rau-tren-dat-my",
+
+        excerpt:
+            "Để vơi đi nỗi nhớ quê nhà, chị Trinh cải tạo mảnh đất trống quanh nhà thành khu vườn xanh mướt.",
+
+        content:
+            "<p>Khu vườn giúp gia đình có thêm rau xanh và cũng là nơi gợi nhớ quê hương.</p>",
+
+        author: "Hải Yến",
+        category: "Thế giới",
+        publishedAt: "2026-09-27 16:45",
+        source: "dantri.com.vn",
+
+        image:
+            "https://picsum.photos/seed/garden/900/500",
+
+        url: "#"
+    }
+];
+
+
+// ==========================================
+// 2. KHỞI TẠO LOCALSTORAGE
+// ==========================================
+
+function initializePosts() {
+
+    const savedPosts = localStorage.getItem("posts");
+
+    if (!savedPosts) {
+
+        localStorage.setItem(
+            "posts",
+            JSON.stringify(defaultPosts)
+        );
+
     }
 
-    let htmlContent = "";
-    const categories = Array.isArray(newsData) ? newsData : (newsData.categories || [newsData]);
-
-    categories.forEach(cat => {
-        const articles = cat.articles || cat.items || [];
-        if (articles.length > 0) {
-            htmlContent += `
-                <section class="category-section" style="margin-bottom: 30px;">
-                    <h2 class="category-title" style="border-bottom: 2px solid #0056b3; padding-bottom: 5px; color: #0056b3;">${cat.name || cat.category || 'Tin Nổi Bật'}</h2>
-                    <div class="articles-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-top: 15px;">
-            `;
-
-            articles.forEach((article, index) => {
-                const articleId = article.id || article.link || index;
-                // Lưu thẳng dữ liệu bài viết vào localStorage khi người dùng bấm vào
-                htmlContent += `
-                    <div class="article-card" style="border: 1px solid #ddd; border-radius: 8px; overflow: hidden; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-                        ${article.image ? `<img src="${article.image}" alt="${article.title}" style="width:100%; height:180px; object-fit:cover;" onerror="this.style.display='none'">` : ''}
-                        <div style="padding: 15px;">
-                            <h3 style="font-size: 16px; margin-bottom: 10px;">
-                                <a href="detail.html?id=${encodeURIComponent(articleId)}" onclick='localStorage.setItem("selectedArticle", JSON.stringify(${JSON.stringify(article).replace(/'/g, "&#39;")}));' style="text-decoration:none; color:#333;">${article.title}</a>
-                            </h3>
-                            <p style="font-size: 13px; color: #666; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">${article.description || article.summary || ''}</p>
-                            <a href="detail.html?id=${encodeURIComponent(articleId)}" onclick='localStorage.setItem("selectedArticle", JSON.stringify(${JSON.stringify(article).replace(/'/g, "&#39;")}));' style="display:inline-block; margin-top:10px; color:#0056b3; font-weight:bold; font-size:13px; text-decoration:none;">Xem chi tiết →</a>
-                        </div>
-                    </div>
-                `;
-            });
-
-            htmlContent += `
-                    </div>
-                </section>
-            `;
-        }
-    });
-
-    homeContainer.innerHTML = htmlContent;
 }
 
-// ==========================================
-// 2. Xử lý Trang Chi Tiết (detail.html)
-// ==========================================
-function renderDetailPage() {
-    const detailContainer = document.getElementById("detail-content");
-    if (!detailContainer) return;
 
-    let foundArticle = null;
+// ==========================================
+// 3. LẤY DANH SÁCH BÀI VIẾT
+// ==========================================
+
+function getPosts() {
+
     try {
-        foundArticle = JSON.parse(localStorage.getItem("selectedArticle"));
-    } catch (e) {}
 
-    if (foundArticle) {
-        detailContainer.innerHTML = `
-            <article class="article-detail" style="background:#fff; padding:25px; border-radius:8px; margin-top:20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                <h1 style="font-size: 24px; color: #222; margin-bottom: 15px; line-height: 1.4;">${foundArticle.title || ''}</h1>
-                <div class="article-meta" style="margin-bottom: 20px; color: #777; font-size: 13px;">
-                    <span>📅 Ngày đăng: ${foundArticle.pubDate || foundArticle.date || 'Mới cập nhật'}</span>
-                    ${foundArticle.author ? `<span style="margin-left:15px;">✍️ Tác giả: ${foundArticle.author}</span>` : ''}
-                </div>
-                ${foundArticle.description ? `<p style="font-weight:bold; font-size:16px; line-height:1.5; color:#444; margin-bottom:20px; background:#f9f9f9; padding:12px; border-left:4px solid #0056b3;">${foundArticle.description}</p>` : ''}
-                <div class="article-body" style="line-height: 1.8; font-size: 15px; color: #333;">
-                    ${foundArticle.content || foundArticle.summary || '<p>Nội dung chi tiết đang được cập nhật...</p>'}
-                </div>
-                <div style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px;">
-                    <a href="index.html" style="display:inline-block; padding:10px 20px; background:#0056b3; color:#fff; text-decoration:none; border-radius:5px; font-weight:bold;">← Quay lại trang chủ</a>
-                </div>
-            </article>
-        `;
+        const posts =
+            JSON.parse(
+                localStorage.getItem("posts")
+            );
+
+        if (Array.isArray(posts)) {
+            return posts;
+        }
+
+    } catch (error) {
+
+        console.log(
+            "Lỗi đọc dữ liệu:",
+            error
+        );
+
+    }
+
+    return defaultPosts;
+}
+
+
+// ==========================================
+// 4. TẠO ẢNH DỰ PHÒNG
+// ==========================================
+
+function setFallbackImage(img) {
+
+    img.onerror = null;
+
+    img.src =
+        "https://picsum.photos/seed/news24h/900/500";
+
+}
+
+
+// ==========================================
+// 5. XỬ LÝ CRAWLER
+// ==========================================
+
+function crawlArticle() {
+
+    // Tìm ô nhập URL
+    const urlInput =
+        document.getElementById("url-input") ||
+        document.getElementById("article-url") ||
+        document.querySelector(
+            'input[type="url"]'
+        ) ||
+        document.querySelector(
+            'input[type="text"]'
+        );
+
+
+    // Tìm vùng hiện JSON
+    const output =
+        document.getElementById("crawl-result") ||
+        document.getElementById("result") ||
+        document.querySelector("pre");
+
+
+    if (!urlInput) {
+
+        alert(
+            "Không tìm thấy ô nhập URL."
+        );
+
+        return;
+    }
+
+
+    const url =
+        urlInput.value.trim();
+
+
+    if (url === "") {
+
+        alert(
+            "Vui lòng nhập URL bài viết!"
+        );
+
+        return;
+    }
+
+
+    if (
+        !url.startsWith("http://") &&
+        !url.startsWith("https://")
+    ) {
+
+        alert(
+            "URL không hợp lệ!"
+        );
+
+        return;
+    }
+
+
+    // ======================================
+    // DEMO DỮ LIỆU CRAWL
+    // ======================================
+
+    const idMatch =
+        url.match(/(\d{10,})/);
+
+
+    const articleId =
+        idMatch
+            ? "dtri-" + idMatch[1]
+            : "dtri-" + Date.now();
+
+
+    const crawledArticle = {
+
+        id: articleId,
+
+        title:
+            "Hà Nội tính cơ chế bồi thường đất đặc biệt cho 7 dự án đường sắt",
+
+        slug:
+            "ha-noi-tinh-co-che-boi-thuong-dat-dac-biet-cho-7-du-an-duong-sat",
+
+        excerpt:
+            "Hà Nội đang xem xét cơ chế bồi thường, hỗ trợ và tái định cư đặc biệt để triển khai 7 dự án đường sắt quan trọng trên địa bàn thành phố.",
+
+        content:
+            `<p>
+                Hà Nội đang nghiên cứu và đề xuất
+                cơ chế bồi thường, hỗ trợ và tái định cư
+                đặc biệt nhằm tháo gỡ khó khăn trong
+                công tác giải phóng mặt bằng cho
+                7 dự án đường sắt trọng điểm.
+            </p>
+
+            <p>
+                Đây là nhóm dự án hạ tầng giao thông
+                có vai trò quan trọng trong việc phát
+                triển mạng lưới vận tải công cộng và
+                giảm ùn tắc đô thị.
+            </p>`,
+
+        author:
+            "Văn Hưng",
+
+        category:
+            "Bất động sản",
+
+        publishedAt:
+            "2026-09-28 12:22",
+
+        source:
+            "dantri.com.vn",
+
+        image:
+            "https://picsum.photos/seed/hanoi-railway/900/500",
+
+        url: url
+
+    };
+
+
+    // ======================================
+    // LƯU LOCALSTORAGE
+    // ======================================
+
+    let posts = getPosts();
+
+
+    // Kiểm tra xem bài đã tồn tại chưa
+    const existingIndex =
+        posts.findIndex(
+            post =>
+                String(post.id) ===
+                String(crawledArticle.id)
+        );
+
+
+    if (existingIndex >= 0) {
+
+        posts[existingIndex] =
+            crawledArticle;
+
     } else {
-        detailContainer.innerHTML = `
-            <div style="padding: 40px; text-align: center; background: #fff; border-radius: 8px; margin-top: 20px;">
-                <h3>Không tìm thấy nội dung bài viết!</h3>
-                <p style="margin: 15px 0; color: #666;">Vui lòng quay lại trang chủ và chọn lại bài viết.</p>
-                <a href="index.html" style="display:inline-block; padding:8px 16px; background:#0056b3; color:#fff; text-decoration:none; border-radius:4px;">Về Trang Chủ</a>
-            </div>
-        `;
+
+        posts.unshift(
+            crawledArticle
+        );
+
     }
+
+
+    localStorage.setItem(
+        "posts",
+        JSON.stringify(posts)
+    );
+
+
+    // ======================================
+    // HIỂN THỊ JSON
+    // ======================================
+
+    if (output) {
+
+        output.textContent =
+            JSON.stringify(
+                crawledArticle,
+                null,
+                2
+            );
+
+    }
+
+
+    alert(
+        "Crawl thành công! Bài viết đã được lưu vào LocalStorage."
+    );
+
 }
 
-// ==========================================
-// 3. Xử lý Ẩn Ảnh Lỗi
-// ==========================================
-function handleImageErrors() {
-    const observer = new MutationObserver(() => {
-        document.querySelectorAll("img").forEach(img => {
-            img.onerror = function() {
-                this.style.display = 'none';
-            };
-        });
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-}
 
 // ==========================================
-// 4. Khởi chạy
+// 6. TỰ ĐỘNG GẮN SỰ KIỆN CHO NÚT CRAWL
 // ==========================================
-document.addEventListener("DOMContentLoaded", () => {
-    renderHomePage();
-    renderDetailPage();
-    handleImageErrors();
-});
+
+function setupCrawlerButton() {
+
+    const button =
+        document.getElementById("crawl-btn") ||
+        document.getElementById("crawl-button") ||
+        document.querySelector(
+            'button[type="button"]'
+        ) ||
+        document.querySelector("button");
+
+
+    if (!button) {
+        return;
+    }
+
+
+    button.addEventListener(
+        "click",
+        function(event) {
+
+            event.preventDefault();
+
+            crawlArticle();
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// 7. KHỞI CHẠY
+// ==========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        initializePosts();
+
+        setupCrawlerButton();
+
+    }
+);
