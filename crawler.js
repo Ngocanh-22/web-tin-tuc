@@ -1,7 +1,6 @@
 // ==========================================
-// 1. Xử lý Trang Chủ (index.html) - Lưu bài viết khi bấm xem
+// 1. Xử lý Trang Chủ (index.html)
 // ==========================================
-
 async function renderHomePage() {
     const homeContainer = document.getElementById("news-container") || 
                           document.getElementById("content") || 
@@ -13,7 +12,7 @@ async function renderHomePage() {
         newsData = JSON.parse(localStorage.getItem("newsData"));
     } catch (e) {}
 
-    // Nếu localStorage trống, thử tải file categories.json
+    // Nếu localStorage trống, tự động nạp từ categories.json
     if (!newsData) {
         try {
             let res = await fetch("categories.json");
@@ -21,7 +20,7 @@ async function renderHomePage() {
             newsData = await res.json();
             localStorage.setItem("newsData", JSON.stringify(newsData));
         } catch (err) {
-            homeContainer.innerHTML = "<p style='padding:20px; text-align:center;'>Chưa có dữ liệu tin tức. Vui lòng vào trang Cào Tin để cập nhật!</p>";
+            homeContainer.innerHTML = "<p style='padding:20px; text-align:center;'>Chưa có dữ liệu tin tức. Vui lòng kiểm tra lại file categories.json!</p>";
             return;
         }
     }
@@ -40,16 +39,16 @@ async function renderHomePage() {
 
             articles.forEach((article, index) => {
                 const articleId = article.id || article.link || index;
-                // Lưu dữ liệu bài viết vào một hàm khi click
+                // Lưu thẳng dữ liệu bài viết vào localStorage khi người dùng bấm vào
                 htmlContent += `
                     <div class="article-card" style="border: 1px solid #ddd; border-radius: 8px; overflow: hidden; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
                         ${article.image ? `<img src="${article.image}" alt="${article.title}" style="width:100%; height:180px; object-fit:cover;" onerror="this.style.display='none'">` : ''}
                         <div style="padding: 15px;">
                             <h3 style="font-size: 16px; margin-bottom: 10px;">
-                                <a href="detail.html?id=${encodeURIComponent(articleId)}" onclick='localStorage.setItem("currentArticle", JSON.stringify(${JSON.stringify(article).replace(/'/g, "&#39;")}));' style="text-decoration:none; color:#333;">${article.title}</a>
+                                <a href="detail.html?id=${encodeURIComponent(articleId)}" onclick='localStorage.setItem("selectedArticle", JSON.stringify(${JSON.stringify(article).replace(/'/g, "&#39;")}));' style="text-decoration:none; color:#333;">${article.title}</a>
                             </h3>
                             <p style="font-size: 13px; color: #666; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">${article.description || article.summary || ''}</p>
-                            <a href="detail.html?id=${encodeURIComponent(articleId)}" onclick='localStorage.setItem("currentArticle", JSON.stringify(${JSON.stringify(article).replace(/'/g, "&#39;")}));' style="display:inline-block; margin-top:10px; color:#0056b3; font-weight:bold; font-size:13px; text-decoration:none;">Xem chi tiết →</a>
+                            <a href="detail.html?id=${encodeURIComponent(articleId)}" onclick='localStorage.setItem("selectedArticle", JSON.stringify(${JSON.stringify(article).replace(/'/g, "&#39;")}));' style="display:inline-block; margin-top:10px; color:#0056b3; font-weight:bold; font-size:13px; text-decoration:none;">Xem chi tiết →</a>
                         </div>
                     </div>
                 `;
@@ -66,30 +65,28 @@ async function renderHomePage() {
 }
 
 // ==========================================
-// 2. Xử lý Trang Chi Tiết (detail.html) - Đọc trực tiếp bài được lưu
+// 2. Xử lý Trang Chi Tiết (detail.html)
 // ==========================================
-
 function renderDetailPage() {
     const detailContainer = document.getElementById("detail-content");
     if (!detailContainer) return;
 
-    // Lấy trực tiếp bài viết đã được lưu lúc bấm click ở trang chủ
     let foundArticle = null;
     try {
-        foundArticle = JSON.parse(localStorage.getItem("currentArticle"));
+        foundArticle = JSON.parse(localStorage.getItem("selectedArticle"));
     } catch (e) {}
 
     if (foundArticle) {
         detailContainer.innerHTML = `
-            <article class="article-detail" style="background:#fff; padding:20px; border-radius:8px; margin-top:20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                <h1 style="font-size: 24px; color: #222; margin-bottom: 15px;">${foundArticle.title || ''}</h1>
+            <article class="article-detail" style="background:#fff; padding:25px; border-radius:8px; margin-top:20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                <h1 style="font-size: 24px; color: #222; margin-bottom: 15px; line-height: 1.4;">${foundArticle.title || ''}</h1>
                 <div class="article-meta" style="margin-bottom: 20px; color: #777; font-size: 13px;">
                     <span>📅 Ngày đăng: ${foundArticle.pubDate || foundArticle.date || 'Mới cập nhật'}</span>
                     ${foundArticle.author ? `<span style="margin-left:15px;">✍️ Tác giả: ${foundArticle.author}</span>` : ''}
                 </div>
                 ${foundArticle.description ? `<p style="font-weight:bold; font-size:16px; line-height:1.5; color:#444; margin-bottom:20px; background:#f9f9f9; padding:12px; border-left:4px solid #0056b3;">${foundArticle.description}</p>` : ''}
                 <div class="article-body" style="line-height: 1.8; font-size: 15px; color: #333;">
-                    ${foundArticle.content || foundArticle.summary || '<p>Nội dung bài viết đang được cập nhật...</p>'}
+                    ${foundArticle.content || foundArticle.summary || '<p>Nội dung chi tiết đang được cập nhật...</p>'}
                 </div>
                 <div style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px;">
                     <a href="index.html" style="display:inline-block; padding:10px 20px; background:#0056b3; color:#fff; text-decoration:none; border-radius:5px; font-weight:bold;">← Quay lại trang chủ</a>
@@ -99,7 +96,7 @@ function renderDetailPage() {
     } else {
         detailContainer.innerHTML = `
             <div style="padding: 40px; text-align: center; background: #fff; border-radius: 8px; margin-top: 20px;">
-                <h3>Không tìm thấy nội dung bài viết.</h3>
+                <h3>Không tìm thấy nội dung bài viết!</h3>
                 <p style="margin: 15px 0; color: #666;">Vui lòng quay lại trang chủ và chọn lại bài viết.</p>
                 <a href="index.html" style="display:inline-block; padding:8px 16px; background:#0056b3; color:#fff; text-decoration:none; border-radius:4px;">Về Trang Chủ</a>
             </div>
@@ -110,7 +107,6 @@ function renderDetailPage() {
 // ==========================================
 // 3. Xử lý Ẩn Ảnh Lỗi
 // ==========================================
-
 function handleImageErrors() {
     const observer = new MutationObserver(() => {
         document.querySelectorAll("img").forEach(img => {
@@ -125,7 +121,6 @@ function handleImageErrors() {
 // ==========================================
 // 4. Khởi chạy
 // ==========================================
-
 document.addEventListener("DOMContentLoaded", () => {
     renderHomePage();
     renderDetailPage();
