@@ -1,48 +1,336 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trang Crawler Tin Tức</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Crawler - Tin Tức 24H</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 </head>
+
+
 <body>
-  <header>
-    <div class="header-container">
-      <h1 class="logo">WEB TIN TỨC 24H</h1>
-      <p class="tagline">Công cụ trích xuất dữ liệu tin tức tự động</p>
-    </div>
-    <nav class="navbar">
-      <ul class="nav-list">
-        <li><a href="index.html">Trang chủ</a></li>
-        <li><a href="crawler.html" class="active">Crawler Tin Tức</a></li>
-      </ul>
-    </nav>
-  </header>
 
-  <main class="container" style="background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-    <h2 style="color: #0056b3; margin-bottom: 15px;">Thu Thập Dữ Liệu Bài Viết (Crawler)</h2>
-    <p style="margin-bottom: 20px; color: #555;">Nhập URL bài viết từ trang web (ví dụ: Dân trí) để thực hiện trích xuất dữ liệu và lưu vào LocalStorage:</p>
-    
-    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-      <input type="text" id="article-url" value="https://dantri.com.vn/bat-dong-san/ha-noi-tinh-co-che-boi-thuong-dat-dac-biet-cho-7-du-an-duong-sat-20260928122246655.htm" style="flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;">
-      <button onclick="crawlArticle()" style="background: #0056b3; color: white; border: none; padding: 12px 25px; border-radius: 4px; font-weight: bold; cursor: pointer;">Bắt đầu Crawl</button>
-    </div>
+    <!-- =========================================
+         HEADER
+    ========================================== -->
 
-    <div id="result-status" style="font-weight: bold; margin-bottom: 15px;"></div>
+    <header class="site-header">
 
-    <h3 style="margin-bottom: 10px; font-size: 16px;">Dữ liệu JSON sau khi crawl:</h3>
-    <pre id="json-output" style="background: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 6px; overflow-x: auto; font-family: Consolas, monospace; font-size: 13px; max-height: 350px;">Chưa có dữ liệu. Nhấn "Bắt đầu Crawl" để trích xuất.</pre>
-    
-    <div style="margin-top: 25px;">
-      <a href="index.html" style="text-decoration: none; background: #6c757d; color: white; padding: 10px 20px; border-radius: 4px; display: inline-block;">&larr; Quay lại Trang chủ xem kết quả</a>
-    </div>
-  </main>
+        <div class="container header-inner">
 
-  <footer class="site-footer">
-    <div class="copyright"><p>&copy; 2026 Web Tin Tức 24H. Tất cả quyền được bảo lưu.</p></div>
-  </footer>
+            <a
+                href="index.html"
+                class="logo"
+            >
+                TIN TỨC 24H
+            </a>
 
-  <script src="crawler.js"></script>
+            <nav class="main-nav">
+
+                <a
+                    href="index.html"
+                    class="nav-link"
+                >
+                    Trang chủ
+                </a>
+
+                <a
+                    href="index.html?category=Thời%20sự"
+                    class="nav-link"
+                >
+                    Thời sự
+                </a>
+
+                <a
+                    href="index.html?category=Thế%20giới"
+                    class="nav-link"
+                >
+                    Thế giới
+                </a>
+
+                <a
+                    href="index.html?category=Bất%20động%20sản"
+                    class="nav-link"
+                >
+                    Bất động sản
+                </a>
+
+                <a
+                    href="index.html?category=Công%20nghệ"
+                    class="nav-link"
+                >
+                    Công nghệ
+                </a>
+
+                <a
+                    href="crawler.html"
+                    class="nav-link active crawler-link"
+                >
+                    Crawler
+                </a>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================
+         MAIN
+    ========================================== -->
+
+    <main class="container">
+
+        <section class="crawler-page">
+
+            <h1>
+                Crawler bài viết
+            </h1>
+
+            <p class="crawler-description">
+                Nhập URL bài viết từ Báo Dân trí để
+                trích xuất dữ liệu và lưu vào LocalStorage.
+            </p>
+
+
+            <div class="crawler-box">
+
+                <!-- URL -->
+
+                <label for="article-url">
+                    URL bài viết Dân trí
+                </label>
+
+                <input
+                    type="url"
+                    id="article-url"
+                    class="crawler-input"
+                    placeholder="https://dantri.com.vn/..."
+                    value="https://dantri.com.vn/bat-dong-san/gia-chung-cu-dat-nen-ha-nhiet-khap-noi-co-hoi-mua-nha-rong-hon-20261017173320034.htm"
+                >
+
+
+                <!-- BUTTON -->
+
+                <button
+                    type="button"
+                    id="crawl-btn"
+                    class="crawler-button"
+                >
+                    Bắt đầu Crawl
+                </button>
+
+
+                <!-- TRẠNG THÁI -->
+
+                <div
+                    id="result-status"
+                    class="result-status"
+                >
+                </div>
+
+
+                <!-- JSON -->
+
+                <h2 class="json-title">
+                    Dữ liệu JSON
+                </h2>
+
+                <pre
+                    id="json-output"
+                    class="json-output"
+                >Chưa có dữ liệu.</pre>
+
+
+                <!-- GHI CHÚ -->
+
+                <div class="crawler-note">
+
+                    <strong>Lưu ý:</strong>
+
+                    <p>
+                        Phiên bản này sử dụng JavaScript
+                        chạy trực tiếp trên trình duyệt.
+                    </p>
+
+                    <p>
+                        Do giới hạn CORS, trình duyệt không
+                        thể tự động tải và đọc mọi trang
+                        Dân trí từ một website khác.
+                    </p>
+
+                    <p>
+                        Vì vậy chức năng Crawler sẽ hoạt động
+                        với các URL bài viết đã có trong
+                        bộ dữ liệu mẫu của website.
+                    </p>
+
+                    <p>
+                        Khi Crawl thành công, bài viết sẽ
+                        được chuẩn hóa thành JSON và lưu
+                        trong LocalStorage.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- QUAY LẠI -->
+
+            <a
+                href="index.html"
+                class="back-link"
+            >
+                ← Quay lại trang chủ
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer class="site-footer">
+
+        <div class="container footer-grid">
+
+            <div class="footer-column">
+
+                <h3>
+                    TIN TỨC 24H
+                </h3>
+
+                <p>
+                    Website tin tức được xây dựng bằng
+                    HTML, CSS và JavaScript.
+                </p>
+
+                <p>
+                    Dữ liệu tham khảo từ Báo Dân trí.
+                </p>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>
+                    Danh mục
+                </h3>
+
+                <a href="index.html?category=Thời%20sự">
+                    Thời sự
+                </a>
+
+                <a href="index.html?category=Thế%20giới">
+                    Thế giới
+                </a>
+
+                <a href="index.html?category=Bất%20động%20sản">
+                    Bất động sản
+                </a>
+
+                <a href="index.html?category=Công%20nghệ">
+                    Công nghệ
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>
+                    Chức năng
+                </h3>
+
+                <a href="index.html">
+                    Trang chủ
+                </a>
+
+                <a href="crawler.html">
+                    Crawler
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>
+                    Nguồn dữ liệu
+                </h3>
+
+                <p>
+                    Báo điện tử Dân trí
+                </p>
+
+                <p>
+                    dantri.com.vn
+                </p>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>
+                    Bài tập lớn
+                </h3>
+
+                <p>
+                    Xây dựng Web Tin Tức
+                </p>
+
+                <p>
+                    HTML - CSS - JavaScript
+                </p>
+
+                <p>
+                    LocalStorage
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <div class="container">
+
+                <p>
+                    © 2026 Web Tin Tức 24H -
+                    Bài tập phục vụ mục đích học tập.
+                </p>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================== -->
+
+    <script src="crawler.js"></script>
+
 </body>
+
 </html>

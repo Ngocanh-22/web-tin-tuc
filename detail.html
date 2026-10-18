@@ -3,209 +3,337 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Chi Tiết Bài Viết - WEB TIN TỨC 24H</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <link rel="stylesheet" href="style.css">
+    <title>Chi tiết bài viết - Tin Tức 24H</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 </head>
+
 
 <body>
 
-    <!-- HEADER -->
-    <header>
-        <div class="header-container">
-            <h1 class="logo">WEB TIN TỨC 24H</h1>
-            <p class="tagline">
-                Cập nhật tin tức nhanh chóng, chính xác mỗi ngày
-            </p>
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <header class="site-header">
+
+        <div class="container header-inner">
+
+            <a
+                href="index.html"
+                class="logo"
+            >
+                TIN TỨC 24H
+            </a>
+
+            <nav class="main-nav">
+
+                <a
+                    href="index.html"
+                    class="nav-link"
+                >
+                    Trang chủ
+                </a>
+
+                <a
+                    href="index.html?category=Thời%20sự"
+                    class="nav-link"
+                >
+                    Thời sự
+                </a>
+
+                <a
+                    href="index.html?category=Thế%20giới"
+                    class="nav-link"
+                >
+                    Thế giới
+                </a>
+
+                <a
+                    href="index.html?category=Bất%20động%20sản"
+                    class="nav-link"
+                >
+                    Bất động sản
+                </a>
+
+                <a
+                    href="index.html?category=Công%20nghệ"
+                    class="nav-link"
+                >
+                    Công nghệ
+                </a>
+
+                <a
+                    href="crawler.html"
+                    class="nav-link crawler-link"
+                >
+                    Crawler
+                </a>
+
+            </nav>
+
         </div>
 
-        <nav class="navbar">
-            <ul class="nav-list">
-                <li>
-                    <a href="index.html">Trang chủ</a>
-                </li>
-
-                <li>
-                    <a href="crawler.html">Crawler Tin Tức</a>
-                </li>
-            </ul>
-        </nav>
     </header>
 
 
-    <!-- NỘI DUNG CHI TIẾT -->
-    <main class="container detail-container">
+    <!-- =========================================
+         NỘI DUNG CHI TIẾT
+    ========================================== -->
 
-        <div id="detail-content">
+    <main class="container detail-page">
 
-            <p>Đang tải bài viết...</p>
+        <article
+            id="article-detail"
+            class="article-detail"
+        >
 
-        </div>
+            <p>
+                Đang tải bài viết...
+            </p>
+
+        </article>
 
     </main>
 
 
-    <!-- FOOTER -->
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
     <footer class="site-footer">
 
-        <div class="footer-container">
+        <div class="container footer-grid">
 
-            <div class="footer-col">
+            <div class="footer-column">
 
-                <h3>WEB TIN TỨC 24H</h3>
+                <h3>
+                    TIN TỨC 24H
+                </h3>
 
                 <p>
-                    Trang tin tức tổng hợp nhanh chóng,
-                    chính xác mỗi ngày.
+                    Website tin tức được xây dựng bằng
+                    HTML, CSS và JavaScript.
+                </p>
+
+                <p>
+                    Dữ liệu tham khảo từ Báo Dân trí.
                 </p>
 
             </div>
 
 
-            <div class="footer-col">
+            <div class="footer-column">
 
-                <h4>Liên Kết Nhanh</h4>
+                <h3>
+                    Danh mục
+                </h3>
 
-                <ul>
-                    <li>
-                        <a href="index.html">
-                            Trang chủ
-                        </a>
-                    </li>
+                <a href="index.html?category=Thời%20sự">
+                    Thời sự
+                </a>
 
-                    <li>
-                        <a href="crawler.html">
-                            Crawler Tin Tức
-                        </a>
-                    </li>
-                </ul>
+                <a href="index.html?category=Thế%20giới">
+                    Thế giới
+                </a>
+
+                <a href="index.html?category=Bất%20động%20sản">
+                    Bất động sản
+                </a>
+
+                <a href="index.html?category=Công%20nghệ">
+                    Công nghệ
+                </a>
 
             </div>
 
 
-            <div class="footer-col">
+            <div class="footer-column">
 
-                <h4>Liên Hệ</h4>
+                <h3>
+                    Chức năng
+                </h3>
+
+                <a href="index.html">
+                    Trang chủ
+                </a>
+
+                <a href="crawler.html">
+                    Crawler
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>
+                    Nguồn dữ liệu
+                </h3>
 
                 <p>
-                    Email: hotro@webtintuc.vn
+                    Báo điện tử Dân trí
                 </p>
 
                 <p>
-                    Địa chỉ: Hà Nội, Việt Nam
+                    dantri.com.vn
+                </p>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>
+                    Bài tập lớn
+                </h3>
+
+                <p>
+                    Xây dựng Web Tin Tức
+                </p>
+
+                <p>
+                    HTML - CSS - JavaScript
+                </p>
+
+                <p>
+                    LocalStorage
                 </p>
 
             </div>
 
         </div>
 
-        <div class="copyright">
 
-            <p>
-                &copy; 2026 WEB TIN TỨC 24H.
-                Tất cả quyền được bảo lưu.
-            </p>
+        <div class="footer-bottom">
+
+            <div class="container">
+
+                <p>
+                    © 2026 Web Tin Tức 24H -
+                    Bài tập phục vụ mục đích học tập.
+                </p>
+
+            </div>
 
         </div>
 
     </footer>
 
 
-    <!-- LOAD DỮ LIỆU -->
+    <!-- =========================================
+         LOAD DỮ LIỆU BÀI VIẾT
+    ========================================== -->
+
     <script src="crawler.js"></script>
 
 
-    <!-- XỬ LÝ TRANG CHI TIẾT -->
     <script>
 
         document.addEventListener(
             "DOMContentLoaded",
             function () {
 
-                /* ==============================
-                   1. LẤY ID TỪ URL
-                ============================== */
+                // =====================================
+                // 1. LẤY ID TRÊN URL
+                // =====================================
 
                 const params =
                     new URLSearchParams(
                         window.location.search
                     );
 
-                const postId =
+                const articleId =
                     params.get("id");
 
 
-                const detailContent =
+                const articleContainer =
                     document.getElementById(
-                        "detail-content"
+                        "article-detail"
                     );
 
 
-                /* ==============================
-                   2. KIỂM TRA ID
-                ============================== */
+                // Không có ID
+                if (!articleId) {
 
-                if (!postId) {
+                    articleContainer.innerHTML = `
+                        <h1 class="detail-title">
+                            Không tìm thấy bài viết
+                        </h1>
 
-                    detailContent.innerHTML = `
-                        <div class="error-message">
+                        <p>
+                            Đường dẫn bài viết không hợp lệ.
+                        </p>
 
-                            <h2>Không tìm thấy bài viết</h2>
-
-                            <p>
-                                Đường dẫn bài viết không hợp lệ.
-                            </p>
-
-                            <a href="index.html">
-                                ← Quay lại trang chủ
-                            </a>
-
-                        </div>
+                        <a
+                            href="index.html"
+                            class="back-link"
+                        >
+                            ← Quay lại trang chủ
+                        </a>
                     `;
 
                     return;
                 }
 
 
-                /* ==============================
-                   3. LẤY BÀI TỪ LOCALSTORAGE
-                ============================== */
+
+                // =====================================
+                // 2. LẤY POSTS TỪ LOCALSTORAGE
+                // =====================================
 
                 let posts = [];
 
-                const savedPosts =
-                    localStorage.getItem("posts");
 
+                try {
 
-                if (savedPosts) {
-
-                    try {
-
-                        posts =
-                            JSON.parse(savedPosts);
-
-                    } catch (error) {
-
-                        console.log(
-                            "Lỗi đọc LocalStorage:",
-                            error
+                    const saved =
+                        localStorage.getItem(
+                            "posts"
                         );
 
+
+                    if (saved) {
+
+                        const parsed =
+                            JSON.parse(saved);
+
+
+                        if (
+                            Array.isArray(parsed)
+                        ) {
+
+                            posts = parsed;
+
+                        }
+
                     }
+
+                } catch (error) {
+
+                    console.error(
+                        "Lỗi đọc LocalStorage:",
+                        error
+                    );
 
                 }
 
 
-                /* ==============================
-                   4. NẾU LOCALSTORAGE TRỐNG
-                      DÙNG defaultPosts
-                ============================== */
 
+                // Nếu LocalStorage chưa có dữ liệu
                 if (
                     posts.length === 0 &&
-                    typeof defaultPosts !== "undefined"
+                    typeof defaultPosts !==
+                    "undefined"
                 ) {
 
                     posts = defaultPosts;
@@ -213,151 +341,154 @@
                 }
 
 
-                /* ==============================
-                   5. TÌM BÀI ĐÚNG ID
-                ============================== */
+
+                // =====================================
+                // 3. TÌM BÀI THEO ID
+                // =====================================
 
                 const post =
-                    posts.find(function (item) {
+                    posts.find(
+                        function (item) {
 
-                        return (
-                            String(item.id) ===
-                            String(postId)
-                        );
+                            return (
+                                String(item.id) ===
+                                String(articleId)
+                            );
 
-                    });
+                        }
+                    );
 
 
-                /* ==============================
-                   6. KHÔNG TÌM THẤY BÀI
-                ============================== */
+
+                // =====================================
+                // 4. KHÔNG TÌM THẤY BÀI
+                // =====================================
 
                 if (!post) {
 
-                    detailContent.innerHTML = `
-                        <div class="error-message">
+                    articleContainer.innerHTML = `
+                        <h1 class="detail-title">
+                            Không tìm thấy bài viết
+                        </h1>
 
-                            <h2>
-                                Không tìm thấy bài viết
-                            </h2>
+                        <p>
+                            Bài viết có thể đã bị xóa
+                            hoặc đường dẫn không hợp lệ.
+                        </p>
 
-                            <p>
-                                Bài viết này không tồn tại
-                                hoặc dữ liệu chưa được lưu.
-                            </p>
-
-                            <a href="index.html">
-                                ← Quay lại trang chủ
-                            </a>
-
-                        </div>
+                        <a
+                            href="index.html"
+                            class="back-link"
+                        >
+                            ← Quay lại trang chủ
+                        </a>
                     `;
 
                     return;
                 }
 
 
-                /* ==============================
-                   7. CHUẨN BỊ DỮ LIỆU
-                ============================== */
 
-                const title =
-                    post.title ||
-                    "Không có tiêu đề";
+                // =====================================
+                // 5. ĐỔI TITLE TRÊN TAB TRÌNH DUYỆT
+                // =====================================
 
-
-                const image =
-                    post.image || "";
+                document.title =
+                    post.title +
+                    " - Tin Tức 24H";
 
 
-                const author =
-                    post.author ||
-                    "Không rõ";
 
+                // =====================================
+                // 6. HIỂN THỊ BÀI VIẾT
+                // =====================================
 
-                const category =
-                    post.category ||
-                    "Chưa phân loại";
+                articleContainer.innerHTML = `
+                    <div class="detail-category">
+                        ${post.category}
+                    </div>
 
+                    <h1 class="detail-title">
+                        ${post.title}
+                    </h1>
 
-                const publishedAt =
-                    post.publishedAt ||
-                    "Không rõ";
+                    <div class="detail-meta">
+                        ${post.author}
+                        •
+                        ${post.publishedAt}
+                    </div>
 
+                    <img
+                        src="${post.image}"
+                        alt="${post.title}"
+                        class="detail-image"
+                        id="detail-image"
+                    >
 
-                const content =
-                    post.content ||
-                    post.excerpt ||
-                    "Chưa có nội dung bài viết.";
+                    <p class="detail-excerpt">
+                        ${post.excerpt}
+                    </p>
 
+                    <div class="detail-content">
+                        ${post.content}
+                    </div>
 
-                /* ==============================
-                   8. HIỂN THỊ BÀI VIẾT
-                ============================== */
+                    <div class="detail-source">
 
-                detailContent.innerHTML = `
+                        Nguồn:
+                        <a
+                            href="${post.url}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            ${post.source}
+                        </a>
 
-                    <article class="article-detail">
+                    </div>
 
-                        <h1 class="detail-title">
-                            ${title}
-                        </h1>
-
-
-                        <div class="detail-meta">
-
-                            <span>
-                                <strong>Tác giả:</strong>
-                                ${author}
-                            </span>
-
-                            <span>
-                                <strong>Thời gian:</strong>
-                                ${publishedAt}
-                            </span>
-
-                            <span>
-                                <strong>Chuyên mục:</strong>
-                                ${category}
-                            </span>
-
-                        </div>
-
-
-                        ${
-                            image
-                            ? `
-                                <img
-                                    class="detail-image"
-                                    src="${image}"
-                                    alt="${title}"
-                                    onerror="
-                                        this.style.display='none'
-                                    "
-                                >
-                              `
-                            : ""
-                        }
-
-
-                        <div class="detail-body">
-
-                            ${content}
-
-                        </div>
-
-
-                        <div class="back-home">
-
-                            <a href="index.html">
-                                ← Quay lại trang chủ
-                            </a>
-
-                        </div>
-
-                    </article>
-
+                    <a
+                        href="index.html?category=${encodeURIComponent(
+                            post.category
+                        )}"
+                        class="back-link"
+                    >
+                        ← Quay lại ${post.category}
+                    </a>
                 `;
+
+
+
+                // =====================================
+                // 7. ẢNH DỰ PHÒNG
+                // =====================================
+
+                const detailImage =
+                    document.getElementById(
+                        "detail-image"
+                    );
+
+
+                if (detailImage) {
+
+                    detailImage.addEventListener(
+                        "error",
+                        function () {
+
+                            if (
+                                typeof setFallbackImage ===
+                                "function"
+                            ) {
+
+                                setFallbackImage(
+                                    detailImage
+                                );
+
+                            }
+
+                        }
+                    );
+
+                }
 
             }
         );
@@ -365,4 +496,5 @@
     </script>
 
 </body>
+
 </html>

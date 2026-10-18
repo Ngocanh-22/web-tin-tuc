@@ -1,68 +1,836 @@
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
-body { background-color: #f4f6f9; color: #333; line-height: 1.6; }
-.container { max-width: 1100px; margin: 20px auto; padding: 0 15px; }
+/* =====================================================
+   WEB TIN TỨC 24H
+   FILE: style.css
+===================================================== */
 
-/* Header & Navbar */
-header { background: #0056b3; color: #fff; text-align: center; }
-.header-container { padding: 20px; }
-.logo { font-size: 28px; font-weight: bold; margin-bottom: 5px; }
-.tagline { font-size: 14px; opacity: 0.9; }
-.navbar { background: #004085; }
-.nav-list { list-style: none; display: flex; justify-content: center; flex-wrap: wrap; }
-.nav-list li a { color: #fff; text-decoration: none; padding: 12px 20px; display: block; font-weight: bold; }
-.nav-list li a:hover, .nav-list li a.active { background: #002752; }
 
-/* Top Section: Layout 1-2 */
-.section-title { font-size: 22px; margin-bottom: 15px; color: #0056b3; border-left: 4px solid #0056b3; padding-left: 10px; }
-.sub-title { font-size: 20px; margin: 25px 0 15px; color: #333; border-left: 4px solid #333; padding-left: 10px; }
-.top-section { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+/* =====================================================
+   1. RESET
+===================================================== */
 
-.featured-main img { width: 100%; height: 320px; object-fit: cover; border-radius: 6px; }
-.featured-main h3 { margin: 12px 0 8px; font-size: 22px; line-height: 1.3; }
-.featured-main h3 a { text-decoration: none; color: #111; }
-.featured-main h3 a:hover { color: #0056b3; }
-.featured-main .excerpt { font-size: 14px; color: #555; margin-bottom: 10px; }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-.featured-sub { display: flex; flex-direction: column; justify-content: space-between; gap: 15px; }
-.sub-post-card { background: #fafafa; padding: 10px; border-radius: 6px; border: 1px solid #eee; }
-.sub-post-link { text-decoration: none; display: flex; gap: 12px; align-items: center; }
-.sub-post-card img { width: 110px; height: 75px; object-fit: cover; border-radius: 4px; flex-shrink: 0; }
-.sub-post-card h4 { font-size: 14px; color: #222; line-height: 1.3; }
-.sub-post-card h4:hover { color: #0056b3; }
+html {
+    scroll-behavior: smooth;
+}
 
-/* Posts List (Vertical) */
-.posts-list { display: flex; flex-direction: column; gap: 15px; }
-.post-item { display: flex; gap: 15px; background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-.post-item img { width: 200px; height: 130px; object-fit: cover; border-radius: 6px; flex-shrink: 0; }
-.post-info { display: flex; flex-direction: column; justify-content: center; }
-.post-info h4 a { text-decoration: none; color: #0056b3; font-size: 18px; line-height: 1.3; }
-.post-info h4 a:hover { text-decoration: underline; }
-.post-info p { font-size: 14px; color: #555; margin: 6px 0; }
-.meta { font-size: 12px; color: #777; }
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #ffffff;
+    color: #222222;
+    line-height: 1.6;
+}
 
-/* Footer */
-.site-footer { background: #222; color: #eee; padding: 40px 0 15px; margin-top: 40px; }
-.footer-container { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; padding: 0 15px; }
-.footer-col h3, .footer-col h4 { color: #fff; margin-bottom: 15px; }
-.footer-col ul { list-style: none; }
-.footer-col ul li { margin-bottom: 8px; }
-.footer-col a { color: #bbb; text-decoration: none; }
-.footer-col a:hover { color: #fff; text-decoration: underline; }
-.copyright { text-align: center; padding-top: 20px; margin-top: 30px; border-top: 1px solid #444; font-size: 13px; color: #aaa; }
+img {
+    display: block;
+    width: 100%;
+}
 
-/* Detail Page */
-.detail-container { background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-.detail-title { font-size: 28px; margin: 15px 0 10px; color: #111; line-height: 1.3; }
-.detail-meta { font-size: 13px; color: #666; margin-bottom: 20px; }
-.detail-img { width: 100%; max-height: 450px; object-fit: cover; border-radius: 6px; margin: 15px 0; }
-.detail-excerpt { font-size: 16px; color: #444; margin-bottom: 20px; line-height: 1.5; }
-.detail-content { font-size: 16px; color: #222; line-height: 1.8; }
-.category-tag { background: #007bff; color: #fff; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; text-transform: uppercase; }
+a {
+    color: inherit;
+    text-decoration: none;
+}
 
-/* Responsive Mobile / Tablet */
-@media (max-width: 768px) {
-  .top-section { grid-template-columns: 1fr; }
-  .featured-main img { height: 220px; }
-  .post-item { flex-direction: column; }
-  .post-item img { width: 100%; height: 180px; }
+button,
+input {
+    font-family: inherit;
+}
+
+
+/* =====================================================
+   2. CONTAINER
+===================================================== */
+
+.container {
+    width: 92%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+/* =====================================================
+   3. HEADER
+===================================================== */
+
+.site-header {
+    background: #ffffff;
+    border-bottom: 1px solid #dddddd;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-inner {
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.logo {
+    color: #b00020;
+    font-size: 24px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.main-nav {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.main-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.nav-link {
+    display: block;
+    padding: 23px 13px;
+    font-size: 15px;
+    font-weight: 600;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    transition: 0.2s;
+}
+
+.nav-link:hover {
+    color: #b00020;
+}
+
+.nav-link.active {
+    color: #b00020;
+    border-bottom-color: #b00020;
+}
+
+.crawler-link {
+    margin-left: auto;
+}
+
+
+/* =====================================================
+   4. MAIN
+===================================================== */
+
+.main-content {
+    min-height: 600px;
+    padding-top: 30px;
+    padding-bottom: 50px;
+}
+
+.section-header {
+    margin-bottom: 22px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #b00020;
+}
+
+.section-header h1 {
+    font-size: 28px;
+    line-height: 1.3;
+}
+
+
+/* =====================================================
+   5. TOP NEWS
+   1 BÀI LỚN + 2 BÀI BÊN PHẢI
+===================================================== */
+
+.top-news {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.featured-post {
+    min-width: 0;
+}
+
+.featured-post > a {
+    display: block;
+}
+
+.featured-image {
+    width: 100%;
+    height: 360px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    background: #eeeeee;
+}
+
+.featured-post h2 {
+    margin-top: 7px;
+    font-size: 27px;
+    line-height: 1.3;
+    transition: 0.2s;
+}
+
+.featured-post a:hover h2 {
+    color: #b00020;
+}
+
+.post-category {
+    display: inline-block;
+    color: #b00020;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.post-excerpt {
+    color: #555555;
+    margin-top: 9px;
+    font-size: 15px;
+}
+
+.post-meta {
+    color: #888888;
+    font-size: 13px;
+    margin-top: 10px;
+}
+
+
+/* =====================================================
+   6. 2 BÀI NHỎ BÊN PHẢI
+===================================================== */
+
+.side-news {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.side-post {
+    border-bottom: 1px solid #dddddd;
+    padding-bottom: 18px;
+}
+
+.side-post:last-child {
+    border-bottom: none;
+}
+
+.side-post > a {
+    display: block;
+}
+
+.side-image {
+    width: 100%;
+    height: 155px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background: #eeeeee;
+}
+
+.side-post h3 {
+    font-size: 18px;
+    line-height: 1.4;
+    transition: 0.2s;
+}
+
+.side-post a:hover h3 {
+    color: #b00020;
+}
+
+
+/* =====================================================
+   7. CÁC TIN KHÁC
+===================================================== */
+
+.latest-section {
+    margin-top: 20px;
+}
+
+.section-title {
+    font-size: 23px;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #cccccc;
+}
+
+.news-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.news-item {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 22px;
+    padding: 22px 0;
+    border-bottom: 1px solid #dddddd;
+}
+
+.news-item:first-child {
+    padding-top: 0;
+}
+
+.news-image-link {
+    display: block;
+}
+
+.news-image {
+    width: 300px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 5px;
+    background: #eeeeee;
+}
+
+.news-content {
+    min-width: 0;
+}
+
+.news-content h3 {
+    font-size: 21px;
+    line-height: 1.4;
+    margin-bottom: 6px;
+    transition: 0.2s;
+}
+
+.news-content a:hover h3 {
+    color: #b00020;
+}
+
+.empty-message {
+    padding: 40px 20px;
+    text-align: center;
+    color: #777777;
+    background: #f7f7f7;
+    border-radius: 6px;
+}
+
+
+/* =====================================================
+   8. TRANG CHI TIẾT
+===================================================== */
+
+.detail-page {
+    padding-top: 35px;
+    padding-bottom: 60px;
+}
+
+.article-detail {
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+.detail-category {
+    color: #b00020;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.detail-title {
+    font-size: 36px;
+    line-height: 1.25;
+    margin-bottom: 12px;
+}
+
+.detail-meta {
+    color: #777777;
+    font-size: 14px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #dddddd;
+    margin-bottom: 20px;
+}
+
+.detail-image {
+    width: 100%;
+    max-height: 520px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin: 20px 0;
+    background: #eeeeee;
+}
+
+.detail-excerpt {
+    font-size: 19px;
+    line-height: 1.7;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.detail-content {
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+.detail-content p {
+    margin-bottom: 18px;
+}
+
+.detail-source {
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px solid #dddddd;
+    color: #777777;
+}
+
+.detail-source a {
+    color: #b00020;
+    font-weight: 600;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 30px;
+    color: #b00020;
+    font-weight: 700;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+
+/* =====================================================
+   9. TRANG CRAWLER
+===================================================== */
+
+.crawler-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding-top: 35px;
+    padding-bottom: 60px;
+}
+
+.crawler-page h1 {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.crawler-description {
+    color: #666666;
+    margin-bottom: 25px;
+}
+
+.crawler-box {
+    background: #f7f7f7;
+    border: 1px solid #dddddd;
+    border-radius: 7px;
+    padding: 25px;
+}
+
+.crawler-box label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.crawler-input {
+    width: 100%;
+    height: 46px;
+    padding: 0 14px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    font-size: 15px;
+    outline: none;
+}
+
+.crawler-input:focus {
+    border-color: #b00020;
+}
+
+.crawler-button {
+    margin-top: 15px;
+    padding: 12px 22px;
+    border: none;
+    border-radius: 5px;
+    background: #b00020;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.crawler-button:hover {
+    opacity: 0.9;
+}
+
+.crawler-button:disabled {
+    background: #999999;
+    cursor: not-allowed;
+}
+
+.result-status {
+    margin-top: 18px;
+    font-weight: 600;
+}
+
+.json-title {
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+.json-output {
+    min-height: 180px;
+    max-height: 500px;
+    overflow: auto;
+    padding: 18px;
+    border-radius: 6px;
+    background: #1f1f1f;
+    color: #f5f5f5;
+    font-family: Consolas, monospace;
+    font-size: 14px;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.crawler-note {
+    margin-top: 20px;
+    padding: 15px;
+    background: #fff7df;
+    border-left: 4px solid #e5a100;
+    color: #555555;
+}
+
+
+/* =====================================================
+   10. FOOTER
+===================================================== */
+
+.site-footer {
+    margin-top: 30px;
+    background: #222222;
+    color: #dddddd;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+    gap: 30px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.footer-column h3 {
+    color: #ffffff;
+    font-size: 17px;
+    margin-bottom: 14px;
+}
+
+.footer-column p {
+    font-size: 14px;
+    color: #bbbbbb;
+    margin-bottom: 8px;
+}
+
+.footer-column a {
+    display: block;
+    width: fit-content;
+    color: #bbbbbb;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.footer-column a:hover {
+    color: #ffffff;
+}
+
+.footer-bottom {
+    border-top: 1px solid #444444;
+    padding: 18px 0;
+    text-align: center;
+    color: #999999;
+    font-size: 13px;
+}
+
+
+/* =====================================================
+   11. TABLET
+===================================================== */
+
+@media screen and (max-width: 900px) {
+
+    .header-inner {
+        display: block;
+        padding-top: 15px;
+    }
+
+    .logo {
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+
+    .main-nav {
+        width: 100%;
+    }
+
+    .nav-link {
+        padding: 12px 11px;
+    }
+
+    .crawler-link {
+        margin-left: 0;
+    }
+
+    .top-news {
+        grid-template-columns: 1.5fr 1fr;
+        gap: 18px;
+    }
+
+    .featured-image {
+        height: 300px;
+    }
+
+    .featured-post h2 {
+        font-size: 24px;
+    }
+
+    .side-image {
+        height: 130px;
+    }
+
+    .news-item {
+        grid-template-columns: 240px 1fr;
+        gap: 18px;
+    }
+
+    .news-image {
+        width: 240px;
+        height: 150px;
+    }
+
+    .footer-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+}
+
+
+/* =====================================================
+   12. MOBILE
+===================================================== */
+
+@media screen and (max-width: 768px) {
+
+    .container {
+        width: 94%;
+    }
+
+    .site-header {
+        position: static;
+    }
+
+    .header-inner {
+        min-height: auto;
+    }
+
+    .logo {
+        font-size: 22px;
+    }
+
+    .main-content {
+        padding-top: 22px;
+    }
+
+    .section-header h1 {
+        font-size: 24px;
+    }
+
+    .top-news {
+        display: block;
+    }
+
+    .featured-post {
+        margin-bottom: 25px;
+    }
+
+    .featured-image {
+        height: 260px;
+    }
+
+    .featured-post h2 {
+        font-size: 23px;
+    }
+
+    .side-news {
+        gap: 0;
+    }
+
+    .side-post {
+        padding: 18px 0;
+    }
+
+    .side-post > a {
+        display: grid;
+        grid-template-columns: 150px 1fr;
+        gap: 15px;
+    }
+
+    .side-image {
+        height: 105px;
+        margin-bottom: 0;
+    }
+
+    .side-post h3 {
+        font-size: 17px;
+    }
+
+    .side-post .post-meta {
+        display: none;
+    }
+
+    .news-item {
+        grid-template-columns: 180px 1fr;
+        gap: 15px;
+    }
+
+    .news-image {
+        width: 180px;
+        height: 120px;
+    }
+
+    .news-content h3 {
+        font-size: 18px;
+    }
+
+    .news-content .post-excerpt {
+        display: none;
+    }
+
+    .detail-title {
+        font-size: 29px;
+    }
+
+    .detail-excerpt {
+        font-size: 18px;
+    }
+
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+/* =====================================================
+   13. ĐIỆN THOẠI NHỎ
+===================================================== */
+
+@media screen and (max-width: 480px) {
+
+    .logo {
+        font-size: 20px;
+    }
+
+    .nav-link {
+        font-size: 14px;
+        padding: 10px 9px;
+    }
+
+    .section-header h1 {
+        font-size: 22px;
+    }
+
+    .featured-image {
+        height: 220px;
+    }
+
+    .featured-post h2 {
+        font-size: 21px;
+    }
+
+    .post-excerpt {
+        font-size: 14px;
+    }
+
+    .side-post > a {
+        grid-template-columns: 120px 1fr;
+        gap: 12px;
+    }
+
+    .side-image {
+        height: 85px;
+    }
+
+    .side-post h3 {
+        font-size: 15px;
+    }
+
+    .side-post .post-category {
+        font-size: 12px;
+    }
+
+    .news-item {
+        display: block;
+        padding: 18px 0;
+    }
+
+    .news-image {
+        width: 100%;
+        height: 210px;
+        margin-bottom: 12px;
+    }
+
+    .news-content h3 {
+        font-size: 18px;
+    }
+
+    .news-content .post-excerpt {
+        display: block;
+        font-size: 14px;
+    }
+
+    .detail-title {
+        font-size: 25px;
+    }
+
+    .detail-image {
+        max-height: 350px;
+    }
+
+    .detail-content {
+        font-size: 16px;
+    }
+
+    .crawler-box {
+        padding: 18px;
+    }
+
+    .crawler-page h1 {
+        font-size: 25px;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 22px;
+    }
+
+}
+
+
+/* =====================================================
+   14. MÀN HÌNH RẤT NHỎ
+===================================================== */
+
+@media screen and (max-width: 360px) {
+
+    .featured-image {
+        height: 190px;
+    }
+
+    .news-image {
+        height: 190px;
+    }
+
+    .side-post > a {
+        grid-template-columns: 105px 1fr;
+        gap: 10px;
+    }
+
+    .side-image {
+        height: 78px;
+    }
+
 }
